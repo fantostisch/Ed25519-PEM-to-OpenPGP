@@ -77,9 +77,8 @@ class ResearchTest {
     @Test
     fun edwardsToMontgomery() {
         val u = X25519Field.create()
-        ResearchUtils.twistedEdwardsToMontgomeryU(yBaseArray, u)
         val v = X25519Field.create()
-        ResearchUtils.twistedEdwardsToMontgomeryV(xBaseArray, yBaseArray, v)
+        ResearchUtils.twistedEdwardsToMontgomery(xBaseArray, yBaseArray, u, v)
         val uBigNum = ResearchUtils.fieldNumberToBigInt(u)
         assertEquals(9, uBigNum.longValueExact())
         val vBigNum = ResearchUtils.fieldNumberToBigInt(v)

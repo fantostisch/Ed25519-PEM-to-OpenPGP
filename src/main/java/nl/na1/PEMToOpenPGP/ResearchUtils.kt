@@ -21,22 +21,19 @@ object ResearchUtils {
     }
 
     /**
-     * Calculate the v coordinate on the montgomery curve using the x and y coordinate
-     * from the twisted edwards curve. v = (1+y)/((1-y)x)
+     * Calculate the coordinates on the montgomery curve using the coordinates
+     * from the twisted edwards curve.
      */
-    fun twistedEdwardsToMontgomeryV(x: IntArray, y: IntArray, r: IntArray) {
-        val n = X25519Field.create(); X25519Field.copy(y, 0, n, 0)
-        X25519Field.addOne(n)
+    fun twistedEdwardsToMontgomery(x: IntArray, y: IntArray, u: IntArray, v: IntArray) {
+        twistedEdwardsToMontgomeryU(y, u)
 
-        val d = X25519Field.create()
-        val one = X25519Field.create(); one[0] = 1;
-        X25519Field.sub(one, y, d)
-        X25519Field.mul(d, x, d)
+        val d = X25519Field.create(); X25519Field.copy(x, 0, d, 0)
 
+        // v = u/x
         X25519Field.inv(d, d)
-        X25519Field.mul(n, d, r)
-        X25519Field.normalize(r)
-        scale(r, r)
+        X25519Field.mul(u, d, v)
+        X25519Field.normalize(v)
+        scale(v, v)
     }
 
     // x = ((x+A/3)/B)
