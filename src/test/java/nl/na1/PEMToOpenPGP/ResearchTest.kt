@@ -92,7 +92,7 @@ class ResearchTest {
     // https://tools.ietf.org/id/draft-ietf-lwig-curve-representations-02.html#rfc.appendix.E.3
     fun montgomeryToWeierstrass() {
         val xMont = BigInteger.valueOf(9)
-        val yMont =
+        val yMontAndWeierstrass =
             BigInteger("14781619447589544791020593568409986887264606134616475288964881837755586237401")
 
         val xWeierstrassIntArray = X25519Field.create()
@@ -102,25 +102,13 @@ class ResearchTest {
         )
         val xWeierstrass = ResearchUtils.fieldNumberToBigInt(xWeierstrassIntArray)
 
-        val yWeierstrassIntArray = X25519Field.create()
-        ResearchUtils.montgomeryToWeierstrassY(
-            ResearchUtils.bigIntToFieldNumber(yMont),
-            yWeierstrassIntArray
-        )
-        val yWeierstrass = ResearchUtils.fieldNumberToBigInt(yWeierstrassIntArray)
-
         assertEquals(
             "19298681539552699237261830834781317975544997444273427339909597334652188435546",
             xWeierstrass.toString()
-
-        )
-        assertEquals(
-            "14781619447589544791020593568409986887264606134616475288964881837755586237401",
-            yWeierstrass.toString()
         )
 
         val curve = Curve25519()
-        val point = curve.createPoint(xWeierstrass, yWeierstrass)
+        val point = curve.createPoint(xWeierstrass, yMontAndWeierstrass)
         assertEquals(true, point.isValid)
     }
 }

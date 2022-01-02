@@ -56,14 +56,6 @@ object ResearchUtils {
         X25519Field.normalize(r)
     }
 
-    // y = y/B
-    fun montgomeryToWeierstrassY(x: IntArray, r: IntArray) {
-        val bInv = X25519Field.create(); bInv[0] = 1;
-        X25519Field.inv(bInv, bInv)
-
-        X25519Field.mul(x, bInv, r)
-    }
-
     fun fieldNumberToBigInt(x: IntArray): BigInteger {
         val tmp = ByteArray(32)
         X25519Field.encode(x, tmp, 0)
